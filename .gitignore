@@ -1,0 +1,10 @@
+*.o
+.DS_Store
+*.sdf
+*.suo
+*.pdb
+*.exe
+*.user
+*.db
+[dD]ebug
+[rR]elease
