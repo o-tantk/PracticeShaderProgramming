@@ -26,11 +26,22 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Shader.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
     <ClInclude Include="src\Texture.h">
-      <Filter>소스 파일</Filter>
+      <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="src\Shader.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GLObject.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="lib\freeglut.lib">
+      <Filter>리소스 파일</Filter>
+    </Library>
+    <Library Include="lib\glew32.lib">
+      <Filter>리소스 파일</Filter>
+    </Library>
   </ItemGroup>
 </Project>

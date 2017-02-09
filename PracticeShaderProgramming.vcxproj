@@ -24,8 +24,13 @@
     <ClCompile Include="src\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\GLObject.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\Texture.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="lib\freeglut.lib" />
+    <Library Include="lib\glew32.lib" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{22EF7E23-ABAF-4C8C-A81D-461319B5E59F}</ProjectGuid>

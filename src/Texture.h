@@ -1,7 +1,7 @@
 #pragma once
 
 #include "gl\glew.h"
-#include "shaderBasics.h"
+#include "GLObject.h"
 #include <vector>
 
 struct ImageData{

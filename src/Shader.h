@@ -2,7 +2,7 @@
 
 #include "gl\glew.h"
 #include "glm\glm.hpp"
-#include "shaderBasics.h"
+#include "GLObject.h"
 #include <vector>
 #include <map>
 

@@ -1,5 +1,5 @@
 #include "Texture.h"
-#include "FreeImage\FreeImage.h"
+//#include "FreeImage\FreeImage.h"
 #include <iostream>
 #include <fstream>
 #include <cassert>
@@ -47,69 +47,69 @@ ImageData::createWithRawFile(const char *filename, int width, int height, int by
 
 ImageData::ImageData(const char *filename)
 {
-	assert(sizeof(BYTE) == sizeof(GLubyte));
+	//assert(sizeof(BYTE) == sizeof(GLubyte));
 
-	// image format
-	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
-	// pointer to the image, once loaded
-	FIBITMAP *dib(0);
-	// pointer to the image data
-	BYTE* bits(0);
+	//// image format
+	//FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
+	//// pointer to the image, once loaded
+	//FIBITMAP *dib(0);
+	//// pointer to the image data
+	//BYTE* bits(0);
 
-	// check the file signature and deduce its format
-	fif = FreeImage_GetFileType(filename, 0);
-	// if still unknown, try to guess the file format from the file extension
-	if (fif == FIF_UNKNOWN){
-		fif = FreeImage_GetFIFFromFilename(filename);
-	}
-	// if still unkown, return failure
-	if (fif == FIF_UNKNOWN){
-		std::cerr << "Loading " << filename << " failure. fif unknown." << std::endl;
-		exit(EXIT_FAILURE);
-	}
-	// If image foramt is unsupportable, return failure.
-	if (fif != FIF_BMP && fif != FIF_JPEG && fif != FIF_GIF && fif != FIF_PNG && fif != FIF_TARGA){
-		std::cerr << "Loading " << filename << " failure. Unsupportable format." << std::endl;
-		exit(EXIT_FAILURE);
-	}
+	//// check the file signature and deduce its format
+	//fif = FreeImage_GetFileType(filename, 0);
+	//// if still unknown, try to guess the file format from the file extension
+	//if (fif == FIF_UNKNOWN){
+	//	fif = FreeImage_GetFIFFromFilename(filename);
+	//}
+	//// if still unkown, return failure
+	//if (fif == FIF_UNKNOWN){
+	//	std::cerr << "Loading " << filename << " failure. fif unknown." << std::endl;
+	//	exit(EXIT_FAILURE);
+	//}
+	//// If image foramt is unsupportable, return failure.
+	//if (fif != FIF_BMP && fif != FIF_JPEG && fif != FIF_GIF && fif != FIF_PNG && fif != FIF_TARGA){
+	//	std::cerr << "Loading " << filename << " failure. Unsupportable format." << std::endl;
+	//	exit(EXIT_FAILURE);
+	//}
 
-	// check that the plugin has reading capabilities and load the file
-	if (FreeImage_FIFSupportsReading(fif))
-		dib = FreeImage_Load(fif, filename);
-	// if the image failed to load, return failure
-	if (!dib){
-		std::cerr << "Loading " << filename << " failure. dib error." << std::endl;
-		exit(EXIT_FAILURE);
-	}
+	//// check that the plugin has reading capabilities and load the file
+	//if (FreeImage_FIFSupportsReading(fif))
+	//	dib = FreeImage_Load(fif, filename);
+	//// if the image failed to load, return failure
+	//if (!dib){
+	//	std::cerr << "Loading " << filename << " failure. dib error." << std::endl;
+	//	exit(EXIT_FAILURE);
+	//}
 
-	unsigned int bitPerPixel = FreeImage_GetBPP(dib);
-	switch (bitPerPixel)
-	{
-		case 8:		internalFormat = GL_RED;	format = GL_RED;	break;
-		case 24:	internalFormat = GL_RGB;	format = GL_BGR;	break;
-		case 32:	internalFormat = GL_RGBA;	format = GL_BGRA;	break;
-		default:
-			FreeImage_Unload(dib);
-			std::cerr << "Loading " << filename << " failure. Unsupportable format." << std::endl;
-			exit(EXIT_FAILURE);
-	}
+	//unsigned int bitPerPixel = FreeImage_GetBPP(dib);
+	//switch (bitPerPixel)
+	//{
+	//	case 8:		internalFormat = GL_RED;	format = GL_RED;	break;
+	//	case 24:	internalFormat = GL_RGB;	format = GL_BGR;	break;
+	//	case 32:	internalFormat = GL_RGBA;	format = GL_BGRA;	break;
+	//	default:
+	//		FreeImage_Unload(dib);
+	//		std::cerr << "Loading " << filename << " failure. Unsupportable format." << std::endl;
+	//		exit(EXIT_FAILURE);
+	//}
 
-	// retrieve the image data
-	bits = FreeImage_GetBits(dib);
-	// get the image width and height
-	width = FreeImage_GetWidth(dib);
-	height = FreeImage_GetHeight(dib);
-	// if this somehow one of these failed (they shouldn't), return failure
-	if ((bits == 0) || (width == 0) || (height == 0)){
-		std::cerr << "Loading " << filename << " failure. error unknown." << std::endl;
-		exit(EXIT_FAILURE);
-	}
+	//// retrieve the image data
+	//bits = FreeImage_GetBits(dib);
+	//// get the image width and height
+	//width = FreeImage_GetWidth(dib);
+	//height = FreeImage_GetHeight(dib);
+	//// if this somehow one of these failed (they shouldn't), return failure
+	//if ((bits == 0) || (width == 0) || (height == 0)){
+	//	std::cerr << "Loading " << filename << " failure. error unknown." << std::endl;
+	//	exit(EXIT_FAILURE);
+	//}
 
-	unsigned int dataSize = FreeImage_GetDIBSize(dib);
-	data = new GLubyte[dataSize];
-	memcpy(data, bits, dataSize);
+	//unsigned int dataSize = FreeImage_GetDIBSize(dib);
+	//data = new GLubyte[dataSize];
+	//memcpy(data, bits, dataSize);
 
-	FreeImage_Unload(dib);
+	//FreeImage_Unload(dib);
 }
 
 ImageData::ImageData(const char *filename, int width, int height, int bytePerPixel)
