@@ -1,8 +1,8 @@
 #include "Texture.h"
-//#include "FreeImage\FreeImage.h"
+#include "lodepng.h"
 #include <iostream>
 #include <fstream>
-#include <cassert>
+#include <algorithm>
 
 /////////////////////////////////////////////////////////////////////////////////
 // ImageData implementations
@@ -45,8 +45,29 @@ ImageData::createWithRawFile(const char *filename, int width, int height, int by
 	return new ImageData(filename, width, height, bytePerPixel);
 }
 
-ImageData::ImageData(const char *filename)
+ImageData::ImageData(std::string filename)
 {
+	auto extBegin = filename.find_last_of('.') + 1;
+	auto extension = filename.substr(extBegin);
+	std::transform(extension.begin(), extension.end(), extension.begin(), tolower);
+	if (extension.compare("png") != 0) {
+		std::cerr << "Not supported filetype: " << extension << std::endl;
+		exit(EXIT_FAILURE);
+	}
+
+	std::vector<unsigned char> image;
+	auto error = lodepng::decode(image, width, height, filename);
+	if (error != 0) {
+		std::cerr << "File open failed: " << filename << std::endl;
+		exit(EXIT_FAILURE);
+	}
+
+	data = new GLubyte[image.size()];
+	memcpy(data, image.data(), image.size());
+
+	internalFormat = GL_RGBA;
+	format = GL_RGBA;
+
 	//assert(sizeof(BYTE) == sizeof(GLubyte));
 
 	//// image format

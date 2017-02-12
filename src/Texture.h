@@ -23,7 +23,7 @@ struct ImageData{
 
 protected:
 	//@ Load image file with FreeImage. (BMP / JPG / GIF / PNG / TGA)
-	ImageData(const char *filename);
+	ImageData(std::string filename);
 
 	//@ Load raw image file.
 	ImageData(const char *filename, int width, int height, int bytePerPixel);
