@@ -29,6 +29,7 @@
     <ClInclude Include="src\GLObject.h" />
     <ClInclude Include="src\lodepng.h" />
     <ClInclude Include="src\Mesh.h" />
+    <ClInclude Include="src\PrimitiveTorus.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\Texture.h" />
   </ItemGroup>

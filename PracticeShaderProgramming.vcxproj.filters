@@ -50,6 +50,9 @@
     <ClInclude Include="src\Mesh.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="src\PrimitiveTorus.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="lib\freeglut.lib">
