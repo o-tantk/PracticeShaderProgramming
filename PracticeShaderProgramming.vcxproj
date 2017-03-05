@@ -26,10 +26,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ArrayBuffer.h" />
+    <ClInclude Include="src\FrameBuffer.h" />
     <ClInclude Include="src\GLObject.h" />
     <ClInclude Include="src\lodepng.h" />
     <ClInclude Include="src\Mesh.h" />
+    <ClInclude Include="src\PrimitiveQuad.h" />
     <ClInclude Include="src\PrimitiveTorus.h" />
+    <ClInclude Include="src\Raycaster.h" />
+    <ClInclude Include="src\RenderBuffer.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\Texture.h" />
   </ItemGroup>
@@ -38,6 +42,8 @@
     <Library Include="lib\glew32.lib" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\shader\billboard.fs.glsl" />
+    <None Include="src\shader\billboard.vs.glsl" />
     <None Include="src\shader\phong.fs.glsl" />
     <None Include="src\shader\phong.vs.glsl" />
   </ItemGroup>

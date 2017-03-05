@@ -53,6 +53,18 @@
     <ClInclude Include="src\PrimitiveTorus.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="src\PrimitiveQuad.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Raycaster.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderBuffer.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FrameBuffer.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="lib\freeglut.lib">
@@ -67,6 +79,12 @@
       <Filter>소스 파일\shader</Filter>
     </None>
     <None Include="src\shader\phong.fs.glsl">
+      <Filter>소스 파일\shader</Filter>
+    </None>
+    <None Include="src\shader\billboard.fs.glsl">
+      <Filter>소스 파일\shader</Filter>
+    </None>
+    <None Include="src\shader\billboard.vs.glsl">
       <Filter>소스 파일\shader</Filter>
     </None>
   </ItemGroup>

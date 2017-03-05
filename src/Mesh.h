@@ -35,6 +35,8 @@ public:
 	}
 
 	void draw() {
+		assert(m_vertexBuffer != nullptr);
+
 		glEnableVertexAttribArray(0);
 		m_vertexBuffer->bind();
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);

@@ -24,7 +24,7 @@ public:
 		return new ArrayBuffer(target, size, data, usage);
 	}
 
-	virtual void bind() const {
+	void bind() const {
 		glBindBuffer(m_target, m_id);
 	}
 
