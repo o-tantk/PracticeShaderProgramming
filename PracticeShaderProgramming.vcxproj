@@ -32,6 +32,7 @@
     <ClInclude Include="src\Mesh.h" />
     <ClInclude Include="src\PrimitiveQuad.h" />
     <ClInclude Include="src\PrimitiveTorus.h" />
+    <ClInclude Include="src\Ray.h" />
     <ClInclude Include="src\Raycaster.h" />
     <ClInclude Include="src\RenderBuffer.h" />
     <ClInclude Include="src\Shader.h" />

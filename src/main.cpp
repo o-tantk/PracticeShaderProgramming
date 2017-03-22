@@ -8,9 +8,11 @@
 #include "PrimitiveQuad.h"
 #include "ArrayBuffer.h"
 #include "Raycaster.h"
+#include "Ray.h"
 #include <iostream>
 #include <memory>
 
+glm::ivec2 mousePosition(-1, -1);
 std::shared_ptr<Shader> shader;
 std::shared_ptr<Shader> billboardShader;
 std::shared_ptr<Texture2D> texture;
@@ -19,6 +21,7 @@ std::shared_ptr<PrimitiveQuad> quad;
 std::shared_ptr<Raycaster> raycaster;
 glm::mat4 M, V, P;
 float rotationAngle = 0.0f;
+glm::vec3 cameraPosition(0.0f, 0.0f, 6.0f);
 
 void Initialize() {
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -61,16 +64,18 @@ void display() {
 	}
 
 	M = glm::mat4();
-	M = glm::rotate(M, glm::radians(rotationAngle), glm::vec3(1.0f, 0.0f, 0.0f));
+	//M = glm::rotate(M, glm::radians(rotationAngle), glm::vec3(1.0f, 0.0f, 0.0f));
 	V = glm::lookAt(
-		glm::vec3(5.0f, 5.0f, 5.0f),
+		cameraPosition,
 		glm::vec3(0.0f, 0.0f, 0.0f),
 		glm::vec3(0.0f, 1.0f, 0.0)
 	);
-	P = glm::perspective(45.0f, 1.0f, 0.001f, 10000.0f);
+	P = glm::perspective(45.0f, 1.0f, 2.0f, 10000.0f);
 	glm::mat4 VM = V * M;
 	glm::mat4 inverseVM = glm::inverse(VM);
 	raycaster->updateMatrix(V, P);
+
+
 
 	shader->bind();
 	{
@@ -102,8 +107,16 @@ void timer(int value) {
 void mouse(int button, int state, int x, int y) {
 	if (button == GLUT_LEFT_BUTTON) {
 		if (state == GLUT_DOWN) {
-			glm::vec3 ray = raycaster->getRay(x, y);
-			printf("%.1f %.1f %.1f\n", ray.x, ray.y, ray.z);
+			mousePosition = glm::ivec2(x, y);
+
+			glm::vec3 ray = raycaster->getRay(mousePosition.x, mousePosition.y);
+			printf("%f %f %f %f\n", ray.x, ray.y, ray.z, glm::length(ray));
+
+			glm::mat4 inverseM = glm::inverse(M);
+			Ray r(inverseM * glm::vec4(cameraPosition, 1.0), inverseM * glm::vec4(ray, 1.0));
+			if (r.isHit(torus.get())) {
+				printf("ok\n");
+			}
 		}
 	}
 }
