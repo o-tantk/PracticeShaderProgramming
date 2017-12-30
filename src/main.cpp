@@ -9,8 +9,11 @@
 #include "ArrayBuffer.h"
 #include "Raycaster.h"
 #include "Ray.h"
+#include "FrameBuffer.h"
 #include <iostream>
 #include <memory>
+
+static const glm::ivec2 SCREEN_SIZE(1024, 1024);
 
 glm::ivec2 mousePosition(-1, -1);
 std::shared_ptr<Shader> shader;
@@ -19,6 +22,10 @@ std::shared_ptr<Texture2D> texture;
 std::shared_ptr<PrimitiveTorus> torus;
 std::shared_ptr<PrimitiveQuad> quad;
 std::shared_ptr<Raycaster> raycaster;
+std::shared_ptr<Texture2D> colorBuffer;
+std::shared_ptr<RenderBuffer> depthBuffer;
+std::shared_ptr<FrameBuffer> frameBuffer;
+std::shared_ptr<Shader> testShader;
 glm::mat4 M, V, P;
 float rotationAngle = 0.0f;
 glm::vec3 cameraPosition(0.0f, 0.0f, 6.0f);
@@ -28,15 +35,15 @@ void Initialize() {
 	glClearDepth(1.0f);
 
 	shader = std::shared_ptr<Shader>(Shader::create(
-		ShaderUnit::createWithFile(GL_VERTEX_SHADER, "src/shader/phong.vs.glsl"),
-		ShaderUnit::createWithFile(GL_FRAGMENT_SHADER, "src/shader/phong.fs.glsl")
+		ShaderUnit::createWithFile(GL_VERTEX_SHADER, "shader/phong.vs.glsl"),
+		ShaderUnit::createWithFile(GL_FRAGMENT_SHADER, "shader/phong.fs.glsl")
 	));
 	shader->setUniform("uLightColor", glm::vec3(1.0, 0.957, 0.898));
 	shader->setUniform("uTexture", 0);
 
 	//billboardShader = std::shared_ptr<Shader>(Shader::create(
-	//	ShaderUnit::createWithFile(GL_VERTEX_SHADER, "src/shader/billboard.vs.glsl"),
-	//	ShaderUnit::createWithFile(GL_FRAGMENT_SHADER, "src/shader/billboard.fs.glsl")
+	//	ShaderUnit::createWithFile(GL_VERTEX_SHADER, "shader/billboard.vs.glsl"),
+	//	ShaderUnit::createWithFile(GL_FRAGMENT_SHADER, "shader/billboard.fs.glsl")
 	//));
 
 	texture = std::shared_ptr<Texture2D>(Texture2D::createWithFile("image/fieldstone_DM.png"));
@@ -48,7 +55,25 @@ void Initialize() {
 
 	quad = std::shared_ptr<PrimitiveQuad>(PrimitiveQuad::create());
 
-	raycaster = std::shared_ptr<Raycaster>(Raycaster::create(glm::ivec2(1024, 1024), V, P));
+	raycaster = std::shared_ptr<Raycaster>(Raycaster::create(SCREEN_SIZE, V, P));
+
+	colorBuffer = std::shared_ptr<Texture2D>(Texture2D::createEmpty(GL_RGBA, SCREEN_SIZE.x, SCREEN_SIZE.y, GL_RGBA, GL_FLOAT
+	));
+	colorBuffer->setWrap(GL_CLAMP, GL_CLAMP);
+	colorBuffer->setFilter(GL_LINEAR, GL_LINEAR);
+
+	depthBuffer = std::shared_ptr<RenderBuffer>(RenderBuffer::create(GL_DEPTH_COMPONENT, SCREEN_SIZE.x, SCREEN_SIZE.y));
+
+	frameBuffer = std::shared_ptr<FrameBuffer>(FrameBuffer::create());
+	frameBuffer->attachColor(colorBuffer.get());
+	frameBuffer->attachDepth(depthBuffer.get());
+	frameBuffer->windup();
+
+	testShader = std::shared_ptr<Shader>(Shader::create(
+		ShaderUnit::createWithFile(GL_VERTEX_SHADER, "shader/test.vs.glsl"),
+		ShaderUnit::createWithFile(GL_FRAGMENT_SHADER, "shader/test.fs.glsl")
+	));
+	shader->setUniform("uTexture", 0);
 }
 
 void reshape(int width, int height) {
@@ -56,7 +81,6 @@ void reshape(int width, int height) {
 }
 
 void display() {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	rotationAngle += 1;
 	if (rotationAngle >= 360) {
@@ -64,7 +88,7 @@ void display() {
 	}
 
 	M = glm::mat4();
-	//M = glm::rotate(M, glm::radians(rotationAngle), glm::vec3(1.0f, 0.0f, 0.0f));
+	M = glm::rotate(M, glm::radians(rotationAngle), glm::vec3(1.0f, 0.0f, 0.0f));
 	V = glm::lookAt(
 		cameraPosition,
 		glm::vec3(0.0f, 0.0f, 0.0f),
@@ -75,26 +99,40 @@ void display() {
 	glm::mat4 inverseVM = glm::inverse(VM);
 	raycaster->updateMatrix(V, P);
 
-
-
-	shader->bind();
+	frameBuffer->bind();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	{
-		shader->setUniform("uVM", VM);
-		shader->setUniform("uP", P);
-		shader->setUniform("uNormalMatrix", inverseVM, true);
-		shader->setUniform("uLightPosition_viewspace", glm::vec3(0.0f, 0.0f, 0.0f));
+		shader->bind();
+		{
+			shader->setUniform("uVM", VM);
+			shader->setUniform("uP", P);
+			shader->setUniform("uNormalMatrix", inverseVM, true);
+			shader->setUniform("uLightPosition_viewspace", glm::vec3(0.0f, 0.0f, 0.0f));
 
-		glActiveTexture(GL_TEXTURE0);
-		texture->bind();
+			glActiveTexture(GL_TEXTURE0);
+			texture->bind();
 
-		glEnable(GL_CULL_FACE);
-		glEnable(GL_DEPTH_TEST);
-		torus->draw();
-		quad->draw();
-		glDisable(GL_DEPTH_TEST);
-		glDisable(GL_CULL_FACE);
+			glEnable(GL_CULL_FACE);
+			glEnable(GL_DEPTH_TEST);
+			torus->draw();
+			quad->draw();
+			glDisable(GL_DEPTH_TEST);
+			glDisable(GL_CULL_FACE);
+		}
 	}
-	Shader::bindDefault();
+
+	FrameBuffer::bindDefault();
+	{
+		testShader->bind();
+		{
+			glActiveTexture(GL_TEXTURE0);
+			colorBuffer->bind();
+
+			glEnable(GL_CULL_FACE);
+			quad->draw();
+			glDisable(GL_CULL_FACE);
+		}
+	}
 
 	glutSwapBuffers();
 	glutPostRedisplay();
@@ -122,7 +160,7 @@ void mouse(int button, int state, int x, int y) {
 }
 
 int main(int argc, char **argv) {
-	glutInitWindowSize(1024, 1024);
+	glutInitWindowSize(SCREEN_SIZE.x, SCREEN_SIZE.y);
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 

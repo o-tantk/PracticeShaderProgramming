@@ -33,7 +33,7 @@ public:
 		++m_numColorAttachments;
 	}
 
-	void attachDepth(Texture2D *texture){
+	void attachDepth(Texture2D *texture) {
 		m_mask |= GL_DEPTH_BUFFER_BIT;
 		glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, texture->getID(), 0);
 	}
@@ -56,13 +56,11 @@ public:
 	}
 
 	void windup() {
-		std::vector<GLenum> drawBuffers;
-		drawBuffers.reserve(m_numColorAttachments);
+		std::vector<GLenum> drawBuffers(m_numColorAttachments);
 		for (int i = 0; i < m_numColorAttachments; ++i) {
 			drawBuffers[i] = GL_COLOR_ATTACHMENT0 + i;
 		}
-		glDrawBuffers(m_numColorAttachments, drawBuffers.data(
-		));
+		glDrawBuffers(m_numColorAttachments, drawBuffers.data());
 
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
 			std::cerr << "Failed to initiate framebuffer." << std::endl;
@@ -79,7 +77,7 @@ public:
 
 	void bind() const {
 		if (m_numColorAttachments != -1) {
-			std::cerr << "Trying to use the framebuffer not wound up.") << std::endl;
+			std::cerr << "Trying to use the framebuffer not wound up." << std::endl;
 			exit(EXIT_FAILURE);
 		}
 

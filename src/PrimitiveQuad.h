@@ -6,11 +6,11 @@
 class PrimitiveQuad : public Mesh {
 protected:
 	PrimitiveQuad() {
-		m_vertices.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+		m_vertices.push_back(glm::vec3(-1.0f, -1.0f, 0.0f));
 		m_texcoords.push_back(glm::vec2(0.0f, 0.0f));
 		m_normals.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
 
-		m_vertices.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+		m_vertices.push_back(glm::vec3(1.0f, -1.0f, 0.0f));
 		m_texcoords.push_back(glm::vec2(1.0f, 0.0f));
 		m_normals.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
 
@@ -18,7 +18,7 @@ protected:
 		m_texcoords.push_back(glm::vec2(1.0f, 1.0f));
 		m_normals.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
 
-		m_vertices.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+		m_vertices.push_back(glm::vec3(-1.0f, 1.0f, 0.0f));
 		m_texcoords.push_back(glm::vec2(0.0f, 1.0f));
 		m_normals.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
 

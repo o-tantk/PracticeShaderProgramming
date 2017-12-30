@@ -43,10 +43,12 @@
     <Library Include="lib\glew32.lib" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\shader\billboard.fs.glsl" />
-    <None Include="src\shader\billboard.vs.glsl" />
-    <None Include="src\shader\phong.fs.glsl" />
-    <None Include="src\shader\phong.vs.glsl" />
+    <None Include="shader\billboard.fs.glsl" />
+    <None Include="shader\billboard.vs.glsl" />
+    <None Include="shader\phong.fs.glsl" />
+    <None Include="shader\phong.vs.glsl" />
+    <None Include="shader\test.fs.glsl" />
+    <None Include="shader\test.vs.glsl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{22EF7E23-ABAF-4C8C-A81D-461319B5E59F}</ProjectGuid>

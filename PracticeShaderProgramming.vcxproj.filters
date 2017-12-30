@@ -9,12 +9,12 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{575bce59-261f-4882-890f-a606d9a178ef}</UniqueIdentifier>
+    </Filter>
     <Filter Include="리소스 파일">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="소스 파일\shader">
-      <UniqueIdentifier>{054033dc-9024-48f7-9969-ad532dffd384}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -78,17 +78,23 @@
     </Library>
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\shader\phong.vs.glsl">
-      <Filter>소스 파일\shader</Filter>
+    <None Include="shader\test.vs.glsl">
+      <Filter>Shader</Filter>
     </None>
-    <None Include="src\shader\phong.fs.glsl">
-      <Filter>소스 파일\shader</Filter>
+    <None Include="shader\test.fs.glsl">
+      <Filter>Shader</Filter>
     </None>
-    <None Include="src\shader\billboard.fs.glsl">
-      <Filter>소스 파일\shader</Filter>
+    <None Include="shader\billboard.fs.glsl">
+      <Filter>Shader</Filter>
     </None>
-    <None Include="src\shader\billboard.vs.glsl">
-      <Filter>소스 파일\shader</Filter>
+    <None Include="shader\billboard.vs.glsl">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="shader\phong.fs.glsl">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="shader\phong.vs.glsl">
+      <Filter>Shader</Filter>
     </None>
   </ItemGroup>
 </Project>
