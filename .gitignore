@@ -6,5 +6,6 @@
 *.exe
 *.user
 *.db
+.vs
 [dD]ebug
 [rR]elease
