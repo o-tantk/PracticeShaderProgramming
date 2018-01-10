@@ -68,6 +68,8 @@ ImageData::ImageData(std::string filename)
 	internalFormat = GL_RGBA;
 	format = GL_RGBA;
 
+	flipVertical();
+
 	//assert(sizeof(BYTE) == sizeof(GLubyte));
 
 	//// image format

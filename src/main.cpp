@@ -10,6 +10,7 @@
 #include "Raycaster.h"
 #include "Ray.h"
 #include "FrameBuffer.h"
+#include "RenderTexture.h"
 #include <iostream>
 #include <memory>
 
@@ -26,6 +27,7 @@ std::shared_ptr<Texture2D> colorBuffer;
 std::shared_ptr<RenderBuffer> depthBuffer;
 std::shared_ptr<FrameBuffer> frameBuffer;
 std::shared_ptr<Shader> testShader;
+std::shared_ptr<RenderTexture> renderTexture;
 glm::mat4 M, V, P;
 float rotationAngle = 0.0f;
 glm::vec3 cameraPosition(0.0f, 0.0f, 6.0f);
@@ -73,7 +75,9 @@ void Initialize() {
 		ShaderUnit::createWithFile(GL_VERTEX_SHADER, "shader/test.vs.glsl"),
 		ShaderUnit::createWithFile(GL_FRAGMENT_SHADER, "shader/test.fs.glsl")
 	));
-	shader->setUniform("uTexture", 0);
+	testShader->setUniform("uTexture", 0);
+
+	renderTexture = std::shared_ptr<RenderTexture>(RenderTexture::create(SCREEN_SIZE));
 }
 
 void reshape(int width, int height) {
@@ -88,7 +92,7 @@ void display() {
 	}
 
 	M = glm::mat4();
-	M = glm::rotate(M, glm::radians(rotationAngle), glm::vec3(1.0f, 0.0f, 0.0f));
+	//M = glm::rotate(M, glm::radians(rotationAngle), glm::vec3(1.0f, 0.0f, 0.0f));
 	V = glm::lookAt(
 		cameraPosition,
 		glm::vec3(0.0f, 0.0f, 0.0f),
@@ -98,6 +102,31 @@ void display() {
 	glm::mat4 VM = V * M;
 	glm::mat4 inverseVM = glm::inverse(VM);
 	raycaster->updateMatrix(V, P);
+
+	renderTexture->bind();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	{
+		auto M1 = glm::translate(glm::mat4(), glm::vec3(1.0f, 1.0f, 0.0f));
+		M1 = glm::scale(glm::mat4(), glm::vec3(SCREEN_SIZE / 2, 0.0f)) * M1;
+		auto P1 = glm::ortho<float>(0.0f, SCREEN_SIZE.x, 0.0f, SCREEN_SIZE.y);
+
+		shader->bind();
+		{
+			shader->setUniform("uVM", M1);
+			shader->setUniform("uP", P1);
+			shader->setUniform("uNormalMatrix", glm::inverse(M1), true);
+			shader->setUniform("uLightPosition_viewspace", glm::vec3(0.0f, 0.0f, 0.0f));
+
+			glActiveTexture(GL_TEXTURE0);
+			texture->bind();
+
+			glEnable(GL_CULL_FACE);
+			glEnable(GL_DEPTH_TEST);
+			quad->draw();
+			glDisable(GL_DEPTH_TEST);
+			glDisable(GL_CULL_FACE);
+		}
+	}
 
 	frameBuffer->bind();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -110,11 +139,12 @@ void display() {
 			shader->setUniform("uLightPosition_viewspace", glm::vec3(0.0f, 0.0f, 0.0f));
 
 			glActiveTexture(GL_TEXTURE0);
-			texture->bind();
+			auto renderedTexture = renderTexture->getTexture();
+			renderedTexture->bind();
 
 			glEnable(GL_CULL_FACE);
 			glEnable(GL_DEPTH_TEST);
-			torus->draw();
+			//torus->draw();
 			quad->draw();
 			glDisable(GL_DEPTH_TEST);
 			glDisable(GL_CULL_FACE);

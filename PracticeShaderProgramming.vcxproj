@@ -35,6 +35,7 @@
     <ClInclude Include="src\Ray.h" />
     <ClInclude Include="src\Raycaster.h" />
     <ClInclude Include="src\RenderBuffer.h" />
+    <ClInclude Include="src\RenderTexture.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\Texture.h" />
   </ItemGroup>

@@ -68,6 +68,9 @@
     <ClInclude Include="src\Ray.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="src\RenderTexture.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="lib\freeglut.lib">
