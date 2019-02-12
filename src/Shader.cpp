@@ -37,7 +37,7 @@ ShaderUnit::createWithFile(GLenum type, const char *filename)
 		stream.close();
 	}
 	else{
-		std::cerr << "Impossible to open \"" << filename << "\". Are you in the right directory?" << std::endl;
+		std::cerr << "Unable to open \"" << filename << "\". Are you in the right directory?" << std::endl;
 		exit(EXIT_FAILURE);
 	}
 
