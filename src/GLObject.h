@@ -2,10 +2,12 @@
 
 #include "gl\glew.h"
 
-class GLObject {
+class GLObject
+{
 protected:
-	GLuint m_id;
+    GLuint m_id;
+
 public:
-	virtual		~GLObject() { }
-	GLuint		getID() const { return m_id; }
+    virtual		~GLObject() { }
+    GLuint		getID() const { return m_id; }
 };
